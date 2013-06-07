@@ -4,6 +4,7 @@ require "compass-rails/configuration"
 
 module CompassRails
 
+    RAILS_4 = %r{^4.0}
     RAILS_32 = %r{^3.2}
     RAILS_31 = %r{^3.1}
     RAILS_23 = %r{^2.3}
@@ -21,7 +22,7 @@ module CompassRails
       end
       #load the rails config
       require "#{rails_config_path}/config/application.rb"
-      if rails31? || rails32?
+      if rails31? || rails32? || rails4?
         require 'sass-rails'
         require 'sprockets/railtie'
         require 'rails/engine'
@@ -83,6 +84,11 @@ module CompassRails
       rails_spec.version.to_s
     end
 
+    def rails4?
+      return false unless defined?(::Rails)
+      rails_version =~ RAILS_4
+    end
+
     def rails3?
       return false unless defined?(::Rails)
       rails_version =~ RAILS_3
@@ -114,7 +120,7 @@ module CompassRails
       load_rails unless rails2?
       config = Compass::Configuration::Data.new('rails')
       config.extend(Configuration::Default)
-      if (rails31? || rails32?)
+      if (rails31? || rails32? || rails4?)
         if asset_pipeline_enabled?
           require "compass-rails/configuration/3_1"
           config.extend(Configuration::Rails3_1)

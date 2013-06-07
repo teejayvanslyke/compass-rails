@@ -1,5 +1,7 @@
 if defined?(::Rails)
-  if CompassRails.rails31? || CompassRails.rails32?
+  if CompassRails.rails4?
+    require "compass-rails/railties/4_0"
+  elsif CompassRails.rails31? || CompassRails.rails32?
     require "compass-rails/railties/3_1"
   elsif CompassRails.rails3?
     require "compass-rails/railties/3_0"
